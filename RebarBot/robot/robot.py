@@ -10,7 +10,7 @@ import components.drivetrain
 import constants
 
 
-class MagicRobot(magicbot.MagicRobot):
+class RebarBot(magicbot.MagicRobot):
     """
     While we're here, I wanna thank the folks at Instempunks (Team 3966) down in Tennessee, 
     whose magic bot code from 2021 really helped me learn how this stuff works. No, they did not
@@ -44,4 +44,4 @@ class MagicRobot(magicbot.MagicRobot):
 
 if __name__ == '__main__':
     # RUN AAAAAAAAAAAAAAAAAAAAAAAAAA
-    wpilib.run(MagicRobot)
+    wpilib.run(RebarBot)
