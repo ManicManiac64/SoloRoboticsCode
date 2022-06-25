@@ -11,11 +11,6 @@ import constants
 
 
 class RebarBot(magicbot.MagicRobot):
-    """
-    While we're here, I wanna thank the folks at Instempunks (Team 3966) down in Tennessee, 
-    whose magic bot code from 2021 really helped me learn how this stuff works. No, they did not
-    give me permission. Really taking 'steal from the best, invent the rest' to another level.
-    """
 
     # beans. drivetrain is a Drivetrain, how cool is that woah
     drivetrain: components.drivetrain.Drivetrain
@@ -29,7 +24,7 @@ class RebarBot(magicbot.MagicRobot):
         self.BRMotor = ctre.WPI_TalonFX(constants.BRMotorPort)
 
         # controller
-        self.driverController = wpilib.XboxController(constants.driverControllerPort)
+        self.driverController = wpilib.PS4Controller(constants.driverControllerPort)
 
     def teleopInit(self):
         '''When teleop starts, this will be called'''
@@ -40,7 +35,8 @@ class RebarBot(magicbot.MagicRobot):
         '''For every certain time interval teleop occurs, this is called'''
         # MOVE AAAAAAAAAAAAAAAAAAAAAAA
         self.drivetrain.move(-self.driverController.getLeftY(), -self.driverController.getRightY())
-
+        wpilib.SmartDashboard.putNumber("LeftY", self.driverController.getLeftY())
+        wpilib.SmartDashboard.putNumber("RightY", self.driverController.getRightY())
 
 if __name__ == '__main__':
     # RUN AAAAAAAAAAAAAAAAAAAAAAAAAA
