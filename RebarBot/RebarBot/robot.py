@@ -35,8 +35,6 @@ class RebarBot(magicbot.MagicRobot):
         '''For every certain time interval teleop occurs, this is called'''
         # MOVE AAAAAAAAAAAAAAAAAAAAAAA
         self.drivetrain.move(-self.driverController.getLeftY(), -self.driverController.getRightY())
-        wpilib.SmartDashboard.putNumber("LeftY", self.driverController.getLeftY())
-        wpilib.SmartDashboard.putNumber("RightY", self.driverController.getRightY())
 
 if __name__ == '__main__':
     # RUN AAAAAAAAAAAAAAAAAAAAAAAAAA
