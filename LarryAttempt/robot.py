@@ -26,3 +26,5 @@ class Larry(magicbot.MagicRobot):
             )
         
         self.driverController = wpilib.XboxController(constants.kdriverControllerPort)
+
+        self.gyro = wpilib.ADXRS450_Gyro()
