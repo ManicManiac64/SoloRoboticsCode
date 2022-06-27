@@ -6,8 +6,8 @@ import constants
 
 class Larry(magicbot.MagicRobot):
 
-    #beans. swervedrive is a SwerveDrive, how cool is that woah. i mean not that cool but-
-    swervedrive: components.swervedrive.SwerveDrive
+    #beans. drive is a SwerveDrive, how cool is that woah. i mean not that cool but-
+    drive: components.swervedrive.SwerveDrive
 
     #Create objects. Do it now.
     def createObjects(self):
@@ -28,3 +28,6 @@ class Larry(magicbot.MagicRobot):
         self.driverController = wpilib.XboxController(constants.kdriverControllerPort)
 
         self.gyro = wpilib.ADXRS450_Gyro()
+
+    def teleopPeriodic(self):
+        self.drive.move(self.driverController.getLeftX(), self.driverController.getLeftY(), self.driverController.getRightX())

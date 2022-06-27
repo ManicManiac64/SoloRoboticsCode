@@ -1,3 +1,4 @@
+from wpilib import ADXRS450_Gyro
 import constants
 
 import math
@@ -25,7 +26,6 @@ class SwerveModule:
         self.pidController = wpimath.controller.PIDController(constants.kP, constants.kI, constants.kD)
 
         self.turnMotor.configSelectedFeedbackSensor(ctre.FeedbackDevice.IntegratedSensor, 0, 10)
-        self.turnMotor.configIntegratedSensorAbsoluteRange(ctre.AbsoluteSensorRange(0))
 
     def closestAngle(self, a, b):
         """
@@ -65,3 +65,19 @@ class SwerveDrive:
     """
     Swerve drive component. Now we're gaming
     """
+    FLModule: SwerveModule
+    BLModule: SwerveModule
+    FRModule: SwerveModule
+    BRModule: SwerveModule
+    gyro: ADXRS450_Gyro
+
+    def move(self, leftX, leftY, rightX):
+        """
+        Move the swerve drive. This doesn't actually move anything, but it 
+        """
+        ...
+    
+    def execute(self):
+        ...
+
+#todo: have values that can be changed in move and then used to set motors in execute in swerve drive class

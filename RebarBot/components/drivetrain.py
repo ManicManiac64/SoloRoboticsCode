@@ -23,7 +23,6 @@ class Drivetrain:
 
     # setup for the drivetrain (woah!)
     def setup(self):
-        # reset to defaults (just for fun)
 
         # back motors follow front motors in tank drive, this way we have less work :)
         self.BLMotor.follow(self.FLMotor)

@@ -1,1 +1,9 @@
-# Larry (Swerve Drive)
+# PROGRAMMING LARRY: THE GUIDE
+
+Let's say hypothetically you've been locked in a room and told to program Larry with nothing but VSCode, Python, a computer, a charger (you'll be in there for a while), some food (you'll be in there for a while), some water (you'll be in there for a while), a television (gotta keep up with the news), and, of course, Larry. As I write this guide, I am not locked in a room, and I do not have food, drink, or Larry, because it's 2:30 in the morning because I've been staying up late programming. However, I do have all the other stuff, so let's program Larry, I guess.
+
+## PROGRAMMING LARRY: THE GUIDE: THE MOVIE
+
+Now, let's say hypothetically you've been asked to create a movie about this guide. I'd be flattered, and hope I get selected as the starring role. Would you hire me? That's not important, because we need to program Larry or else Mercury will blow up! Not that anyone would care, it's kind of a mid planet. But I digress, we need to program. I've said that about 11 times so far, but I'm serious now.
+
+Larry has 4 swerve modules, each with a drive motor and turning motor. These motors will be referred to as driveMotor and turnMotor. "How original", I hear you saying. Shut up before you hurt my feelings. We'll be passing 3 values from an XBOX or PS4 (doesn't really matter) controller. I say "or PS4" because, while we have XBOX controllers at school, I have PS4 controllers here at home, and so I have to make do with them. Yes, wpilib supports PS4 controllers. I was surprised too. But what are those three values? Well, we need the x value of the left stick, the y value of the left stick, and the x value of the right stick. The leftX value controls how much the robot strafes to the left, the leftY how much the robot goes forward or backward, and the rightX value how much the robot rotates. "But JaaaaaAAAAaaaames," you say, "How do we convert those to the proper values on the mOOOOOtooooor?" First off, stop your whining, and second off, good question! I don't know, I'll get back to you around 3:30 AM.
