@@ -46,7 +46,7 @@ class SwerveModule:
         """
         #closest angle
         direc = self.closestAngle(pointA, pointB)
-        #ToDo: further optimize angle 
+        #TODO further optimize angle 
         return direc
 
     def setDirection(self, angle):
@@ -71,6 +71,8 @@ class SwerveDrive:
     BRModule: SwerveModule
     gyro: ADXRS450_Gyro
 
+    #TODO have values set here that can be changed in move and then passed to the motors in execute
+
     def move(self, leftX, leftY, rightX):
         """
         Move the swerve drive. This doesn't actually move anything, but it 
@@ -80,4 +82,3 @@ class SwerveDrive:
     def execute(self):
         ...
 
-#todo: have values that can be changed in move and then used to set motors in execute in swerve drive class
