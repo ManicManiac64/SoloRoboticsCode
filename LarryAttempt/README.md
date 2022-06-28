@@ -4,8 +4,8 @@ Let's say hypothetically you've been locked in a room and told to program Larry 
 
 ## PROGRAMMING LARRY: THE GUIDE: THE MOVIE
 
-Now, let's say hypothetically you've been asked to create a movie about this guide. I'd be flattered, and hope I get selected as the starring role. Would you hire me? That's not important, because we need to program Larry or else Mercury will blow up! Not that anyone would care, it's kind of a mid planet. But I digress, we need to program. I've said that about 11 times so far, but I'm serious now.
+Now, let's say hypothetically you've been asked to create a movie about this guide. I'd be flattered.
 
-Larry has 4 swerve modules, each with a drive motor and turning motor. These motors will be referred to as driveMotor and turnMotor. "How original", I hear you saying. Shut up before you hurt my feelings. We'll be passing 3 values from an XBOX or PS4 (doesn't really matter) controller. I say "or PS4" because, while we have XBOX controllers at school, I have PS4 controllers here at home, and so I have to make do with them. Yes, wpilib supports PS4 controllers. I was surprised too. But what are those three values? Well, we need the x value of the left stick, the y value of the left stick, and the x value of the right stick. The leftX value controls how much the robot strafes to the left, the leftY how much the robot goes forward or backward, and the rightX value how much the robot rotates. "But JaaaaaAAAAaaaames," you say, "How do we convert those to the proper values on the mOOOOOtooooor?" First off, stop your whining, and second off, good question! I don't know, I'll get back to you around 3:30 AM.
+Larry has 4 swerve modules, each module with 2 Falcon 500 motors. To refer to these motors in code, you'll want to refer to the motor controller that controls them, i.e. the TalonFX. One motor drives the wheel (like a tank drive motor) and the other rotates the wheel. Now, how do we make swerve drive with these motors? Try and figure it out yourself.
 
-I went to sleep. It's 10 PM the next day, and I am **READY**. No I'm not.
+If you couldn't figure it out, don't worry, I don't know how to either!
