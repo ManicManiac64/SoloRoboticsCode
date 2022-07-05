@@ -1,15 +1,13 @@
-# wpilib is kinda required when we do anything with robots in frc, sooooooo
-import wpilib
-# wpilib.drive contains stuff great for tank drive! :D :D :D :D :D (those are happy faces)
-import wpilib.drive
 # ctre contains stuff for using TalonFXs on the robot, like TalonFX(). Kinda straightforward.
 import ctre
 # magicbot, for magic bots!
 import magicbot
 
-
 # the actual class
 class Drivetrain:
+    """
+    This drivetrain component utilizes tank drive.
+    """
     # define front left, back left, front right, back right motors
     FLMotor: ctre.WPI_TalonFX
     BLMotor: ctre.WPI_TalonFX
@@ -37,15 +35,16 @@ class Drivetrain:
         self.FRMotor.setNeutralMode(ctre.NeutralMode.Brake)
         self.BLMotor.setNeutralMode(ctre.NeutralMode.Brake)
         self.BRMotor.setNeutralMode(ctre.NeutralMode.Brake)
-        
-        # define differential drive (we'll use it for our tank drive)
-        self.drive = wpilib.drive.DifferentialDrive(self.FLMotor, self.FRMotor)
 
-    def move(self, left, right):
+    def userDrive(self, left, right, percent):
+        """
+        Drive the drivetrain.
+        """
         # these values will be used in execute, making this a setter/control function
-        self.left = left if abs(left) >= 0.05 else 0  # this is a deadband. google it
-        self.right = right if abs(right) >= 0.05 else 0  # deadband, more like one direction, ha get it? 'cause they're a d-oh whatever, moving on
+        self.left = left * percent if abs(left) >= 0.05 else 0  # this is a deadband. google it
+        self.right = right * percent if abs(right) >= 0.05 else 0  # deadband, more like one direction, ha get it? 'cause they're a d-oh whatever, moving on
 
     # this is what actually does stuff, w-w-w-w-woah! cool beans B)
     def execute(self):
-        self.drive.tankDrive(self.left, self.right)
+        self.FLMotor.set(ctre.TalonFXControlMode.PercentOutput, self.left)
+        self.FRMotor.set(ctre.TalonFXControlMode.PercentOutput, self.right)

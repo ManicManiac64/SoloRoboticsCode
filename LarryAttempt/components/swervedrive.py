@@ -1,10 +1,9 @@
-from wpilib import ADXRS450_Gyro
-import constants
-
 import math
 
+from wpilib import ADXRS450_Gyro
 import ctre
-import wpimath.controller
+
+import constants
 
 class SwerveModule:
     """
@@ -12,22 +11,15 @@ class SwerveModule:
     """
     #static methods can be called as a class (SwerveModule.method()) or as an object (flmodule.method()) but cannot access attributes
     @staticmethod
-    def sensorUnitsToDegrees(su):
+    def sensorUnitsToDegrees(su: float) -> float:
         return su * (360/2048)
     
     @staticmethod
-    def degreesToSensorUnits(deg):
+    def degreesToSensorUnits(deg: float) -> float:
         return deg * (2048/360)
 
-    def __init__(self, driveMotor: ctre.TalonFX, turnMotor: ctre.TalonFX):
-
-        self.driveMotor = driveMotor
-        self.turnMotor = turnMotor
-        self.pidController = wpimath.controller.PIDController(constants.kP, constants.kI, constants.kD)
-
-        self.turnMotor.configSelectedFeedbackSensor(ctre.FeedbackDevice.IntegratedSensor, 0, 10)
-
-    def closestAngle(self, a, b):
+    @staticmethod
+    def closestAngle(a: float, b: float) -> float:
         """
         Find the closest direction to go to get from angle a to angle b. Returns an angle in degrees.
         """
@@ -40,20 +32,29 @@ class SwerveModule:
             direc = -(math.copysign(1, direc) * 360.0) + direc
         return direc
 
-    def optimize(self, pointA, pointB):
-        """
-        Optimizes the route from pointA (angle in degrees) to pointB (also angle in degrees) so it is quickest. This way the motor spends the shortest time turning the wheel so we can get quick feedback from turning it.
-        """
-        #closest angle
-        direc = self.closestAngle(pointA, pointB)
-        #TODO further optimize angle 
-        return direc
+    def __init__(self, driveMotor: ctre.TalonFX, turnMotor: ctre.TalonFX):
 
-    def setDirection(self, angle):
+        self.driveMotor = driveMotor
+        self.turnMotor = turnMotor
+        self.turnMotor.configSelectedFeedbackSensor(ctre.TalonFXFeedbackDevice.IntegratedSensor, timeoutMs=10)
+        self.turnMotorIsInverted = False
+
+    def setDirection(self, angle: float):
         """
         Change the direction the module is facing. Takes angle argument (degrees).
         """
-        ...
+        
+        self.turnMotor.setInverted(False)
+        
+        pos = self.sensorUnitsToDegrees(self.turnMotor.getSelectedSensorPosition())
+        optimizedAngle = self.closestAngle(pos, angle)
+        
+        if optimizedAngle != (angle % 360) - (pos % 360):
+            angle = optimizedAngle
+            self.turnMotor.setInverted(True) 
+        
+        self.turnMotor.set(ctre.ControlMode.Position, self.degreesToSensorUnits(angle))
+
 
     def setSpeed(self, speed):
         """
@@ -70,8 +71,6 @@ class SwerveDrive:
     FRModule: SwerveModule
     BRModule: SwerveModule
     gyro: ADXRS450_Gyro
-
-    #TODO have values set here that can be changed in move and then passed to the motors in execute
 
     def move(self, leftX, leftY, rightX):
         """
