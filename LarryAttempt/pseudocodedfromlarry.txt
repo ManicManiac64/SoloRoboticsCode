@@ -1,0 +1,19 @@
+requestedAngle = joysticktodegrees(leftX, leftY)
+requestedUnits = degreestounits(requestedAngle)
+magnitude = scale(hypotenuse(leftX, leftY))
+
+currentAngle = unitstodegrees(turnmotorpos)
+
+if abs(requestedAngle) >= 180 then
+    opposite = abs(requestedAngle) - 180
+otherwise
+    opposite = abs(requestedAngle) + 180
+
+if magnitude is nonzero then
+    if abs(distance) <= math.fabs(distance with opposite) then
+        turn(units * gearRatio)
+        move(magnitude)
+
+    if distance with opposite is better then
+        turn(degreestounits(opposite)*constants.ksteeringGearRatio)
+        move(-self.magnitude)

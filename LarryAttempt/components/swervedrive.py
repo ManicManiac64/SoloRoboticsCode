@@ -1,15 +1,23 @@
 import math
 
+import magicbot
 from wpilib import ADXRS450_Gyro
 import ctre
-
 import constants
+
+def deadband(x):
+    return x if abs(x) > constants.kdeadband else 0
 
 class SwerveModule:
     """
     Create a swerve module. __init__ takes drive motor and turn motor (TalonFXs). The drive motor drives the module, and the turn motor turns it using a PID controller.
     """
     #static methods can be called as a class (SwerveModule.method()) or as an object (flmodule.method()) but cannot access attributes
+    @staticmethod
+    def joystickToDegrees(x: float, y: float, rcw: float) -> float:
+        return 0.0
+    
+    
     @staticmethod
     def sensorUnitsToDegrees(su: float) -> float:
         return su * (360/2048)
@@ -36,32 +44,20 @@ class SwerveModule:
 
         self.driveMotor = driveMotor
         self.turnMotor = turnMotor
-        self.turnMotor.configSelectedFeedbackSensor(ctre.TalonFXFeedbackDevice.IntegratedSensor, timeoutMs=10)
-        self.turnMotorIsInverted = False
 
     def setDirection(self, angle: float):
         """
         Change the direction the module is facing. Takes angle argument (degrees).
         """
         
-        self.turnMotor.setInverted(False)
+        self.turnMotor.set(ctre.ControlMode.MotionMagic, self.degreesToSensorUnits(angle))
         
-        pos = self.sensorUnitsToDegrees(self.turnMotor.getSelectedSensorPosition())
-        optimizedAngle = self.closestAngle(pos, angle)
-        
-        if optimizedAngle != (angle % 360) - (pos % 360):
-            angle = optimizedAngle
-            self.turnMotor.setInverted(True) 
-        
-        self.turnMotor.set(ctre.ControlMode.Position, self.degreesToSensorUnits(angle))
-
-
     def setSpeed(self, speed):
         """
         Change the speed of the module. speed argument should be between -1.0 (backward) and 1.0 (forward)
         """
         self.driveMotor.set(ctre.ControlMode.PercentOutput, speed)
-
+    
 class SwerveDrive:
     """
     Swerve drive component. Now we're gaming
@@ -72,12 +68,54 @@ class SwerveDrive:
     BRModule: SwerveModule
     gyro: ADXRS450_Gyro
 
+    modules = {"FL" : FLModule, "BL" : BLModule, "FR" : FRModule, "BR" : BRModule}
+    angles = {"FL" : 0, "BL" : 0, "FR" : 0, "BR" : 0}
+    speeds = magicbot.will_reset_to({"FL" : 0, "BL" : 0, "FR" : 0, "BR" : 0})
+    
+    def setup(self):
+        self.gyro.calibrate()
+
     def move(self, leftX, leftY, rightX):
         """
         Move the swerve drive. This doesn't actually move anything, but it 
         """
-        ...
-    
+        #rotation is not solved
+        rightX = 0
+
+        #deadband values
+        leftX = deadband(leftX)
+        leftY = deadband(leftY)
+        rightX = deadband(rightX)
+
+        for key in self.modules.keys():
+            
+            module = self.modules[key]
+            module: SwerveModule #just for that sweet syntax highlighting
+            requestedAngle = SwerveModule.joystickToDegrees(leftX, leftY, rightX)
+            optimizedAngle = SwerveModule.closestAngle(requestedAngle)
+            
+            requestedUnits = SwerveModule.degreesToSensorUnits(optimizedAngle)
+
+            magnitude = leftX ** 2 + leftY ** 2
+            if magnitude > 1:
+                magnitude = 1
+
+            currentAngle = SwerveModule.sensorUnitsToDegrees(module.turnMotor.getSelectedSensorPosition())
+
+            if magnitude != 0:
+                self.angles[key] = requestedUnits * constants.kgearRatio
+                
+                if abs(currentAngle - requestedAngle) <= abs(currentAngle - optimizedAngle):
+                    self.speeds[key] = magnitude
+
+                else:
+                    self.speeds[key] = -magnitude
+
+
     def execute(self):
-        ...
+        for key in self.modules.keys():
+            module = self.modules[key]
+            module: SwerveModule
+            module.setDirection(self.angles[key])
+            module.setSpeed(self.speeds[key])
 
