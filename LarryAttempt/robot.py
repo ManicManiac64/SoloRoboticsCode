@@ -26,7 +26,7 @@ class Larry(magicbot.MagicRobot):
             )
         
         #controller
-        self.driverController = wpilib.XboxController(constants.kdriverControllerPort)
+        self.driverController = wpilib.PS4Controller(constants.kdriverControllerPort)
 
         #gyro (for field centric drive)
         self.gyro = wpilib.ADXRS450_Gyro()
@@ -37,3 +37,5 @@ class Larry(magicbot.MagicRobot):
         self.drive.move(self.driverController.getLeftX(), self.driverController.getLeftY(), self.driverController.getRightX())
 
         #execute is called automatically
+if __name__ == "__main__":
+    wpilib.run(Larry)

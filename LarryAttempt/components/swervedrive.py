@@ -1,12 +1,12 @@
 import math
 
 import magicbot
-from wpilib import ADXRS450_Gyro
+import wpilib
 import ctre
 import constants
 
 def deadband(x):
-    return x if abs(x) > constants.kdeadband else 0
+    return x if abs(x) > constants.kdeadband else 0.0
 
 class SwerveModule:
     """
@@ -72,14 +72,14 @@ class SwerveDrive:
     BLModule: SwerveModule
     FRModule: SwerveModule
     BRModule: SwerveModule
-    gyro: ADXRS450_Gyro
-
-    modules = {"FL" : FLModule, "BL" : BLModule, "FR" : FRModule, "BR" : BRModule}
+    gyro: wpilib.ADXRS450_Gyro
+    
     angles = {"FL" : 0, "BL" : 0, "FR" : 0, "BR" : 0}
     speeds = magicbot.will_reset_to({"FL" : 0, "BL" : 0, "FR" : 0, "BR" : 0})
-    
+
     def setup(self):
         self.gyro.calibrate()
+        self.modules = {"FL" : self.FLModule, "BL" : self.BLModule, "FR" : self.FRModule, "BR" : self.BRModule}
 
     def move(self, leftX, leftY, rightX):
         """
@@ -92,6 +92,8 @@ class SwerveDrive:
         leftX = deadband(leftX)
         leftY = deadband(leftY)
         rightX = deadband(rightX)
+
+        wpilib.SmartDashboard.putNumberArray("LX, LY, RX", [leftX, leftY, rightX])
 
         #iterate through keys in dict (we can access each module this way)
         for key in self.modules.keys():
@@ -139,6 +141,8 @@ class SwerveDrive:
                     """
                     self.angles[key] = oppositeAngle
                     self.speeds[key] = -magnitude
+                
+                wpilib.SmartDashboard.putNumberArray(f"{key}Angle+Speed", [self.angles[key], self.speeds[key]])
 
     #execute function is called automatically                
     def execute(self):
@@ -153,4 +157,3 @@ class SwerveDrive:
             module.setDirection(SwerveModule.degreesToSensorUnits(self.angles[key]) * constants.kgearRatio)
             #set speed
             module.setSpeed(self.speeds[key])
-
