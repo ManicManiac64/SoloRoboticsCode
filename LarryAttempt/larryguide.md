@@ -34,17 +34,18 @@ This is cool and all (not really), but we're going to need a few more methods. T
 
 ```python
 def setDirection(self, angle: float):
-        """
-        Change the direction the module is facing. Takes angle argument (degrees).
-        """
+    """
+    Change the direction the module is facing. Takes angle argument (degrees).
+    """
         
-        self.turnMotor.set(ctre.ControlMode.MotionMagic, self.degreesToSensorUnits(angle))
+    self.turnMotor.set(ctre.ControlMode.MotionMagic, self.degreesToSensorUnits(angle))
         
-    def setSpeed(self, speed):
-        """
-        Change the speed of the module. speed argument should be between -1.0 (backward) and 1.0 (forward)
-        """
-        self.driveMotor.set(ctre.ControlMode.PercentOutput, speed)
+def setSpeed(self, speed):
+    """
+    Change the speed of the module. speed argument should be between -1.0 (backward) and 1.0 (forward)
+    """
+    
+    self.driveMotor.set(ctre.ControlMode.PercentOutput, speed)
 ```
 
 For the uninitiated, MotionMagic is pretty cool. We can make stuff super smooth when moving the motor to a sensor position. Anyways, in this code things are quite simple. The drive motor uses PercentOutput to set values to the drive motor. The turn motor uses MotionMagic to move the wheel to the specified angle.
@@ -55,8 +56,8 @@ Moving on, the TalonFX takes values of "raw sensor units", not "degrees" (whatev
 
 ```python
 @staticmethod
-    def degreesToSensorUnits(deg: float) -> float:
-        return deg * (2048/360)
+def degreesToSensorUnits(deg: float) -> float:
+    return deg * (2048/360)
 ```
 
 Again, you really don't need to make this a static method. I did it because I want to be cool and #notlikeotherprogrammers. You don't have to be #notlikeotherprogrammers.
@@ -70,3 +71,7 @@ Can't be that hard, right?
 ## PROGRAMMING LARRY: THE GUIDE: THE MOVIE: THE VIDEO GAME
 
 That's right, we're gaming now. Whether we're good at it or not is yet to be determined. On most swerve drive robots, the robot is controlled with three joystick values. The leftX and leftY values control the translation, while the rightX controls rotation. The rightX controls the speed of rotation, not the exact angle, which is neat and good. Swerve drive is very easy to drive, and also a living hell to code.
+
+Let's begin by just focusing on the left joystick translating the robot. Rotation is pretty important, but not as important as actually moving the robot.
+
+insert more guide here

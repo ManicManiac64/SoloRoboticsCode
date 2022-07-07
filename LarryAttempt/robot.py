@@ -25,9 +25,15 @@ class Larry(magicbot.MagicRobot):
             ctre.TalonFX(constants.kBRD), ctre.TalonFX(constants.kBRT)
             )
         
+        #controller
         self.driverController = wpilib.XboxController(constants.kdriverControllerPort)
 
+        #gyro (for field centric drive)
         self.gyro = wpilib.ADXRS450_Gyro()
 
+    #called every couple of milliseconds during teleop
     def teleopPeriodic(self):
+        #change swerve drive values based on leftX leftY and rightX values
         self.drive.move(self.driverController.getLeftX(), self.driverController.getLeftY(), self.driverController.getRightX())
+
+        #execute is called automatically
