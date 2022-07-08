@@ -26,7 +26,7 @@ class Larry(magicbot.MagicRobot):
             )
         
         #controller
-        self.driverController = wpilib.PS4Controller(constants.kdriverControllerPort)
+        self.driverController = wpilib.XboxController(constants.kdriverControllerPort)
 
         #gyro (for field centric drive)
         self.gyro = wpilib.ADXRS450_Gyro()
