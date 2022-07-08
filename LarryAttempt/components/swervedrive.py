@@ -51,6 +51,10 @@ class SwerveModule:
         self.driveMotor = driveMotor
         self.turnMotor = turnMotor
 
+        #idea: force integrated sensor to use absolute sensor value?
+        self.sensor = ctre.TalonFXSensorCollection(self.turnMotor)
+        self.sensor.setIntegratedSensorPositionToAbsolute(10)
+
     def setDirection(self, angle: float):
         """
         Change the direction the module is facing. Takes angle argument (degrees).
