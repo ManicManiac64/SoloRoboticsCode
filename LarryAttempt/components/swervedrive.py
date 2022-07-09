@@ -15,16 +15,6 @@ class SwerveModule:
     #static methods can be called as a class (SwerveModule.method()) or as an object (flmodule.method()) but cannot access attributes
     
     @staticmethod
-    def joystickToDegrees(x: float, y: float, rcw: float) -> float:
-        initialValue = math.degrees(math.atan2(x, -y))
-        #if x is negative (left) add 360 to the initial value
-        if math.copysign(1, x) == -1:
-            return initialValue + 360.0
-        #if value is 360 make it 0, otherwise just return the value
-        return initialValue if initialValue != 360.0 else 0.0
-    
-    
-    @staticmethod
     def sensorUnitsToDegrees(su: float) -> float:
         return su * (360/2048)
     
@@ -55,12 +45,23 @@ class SwerveModule:
         self.sensor = ctre.TalonFXSensorCollection(self.turnMotor)
         self.sensor.setIntegratedSensorPositionToAbsolute(10)
 
+    def joystickToDegrees(self, x1: float, y1: float, x2: float) -> float:
+        initialValue = math.degrees(math.atan2(x1, -y1))
+        #if x is negative (left) add 360 to the initial value
+        if math.copysign(1, x1) == -1:
+            translation = initialValue + 360.0
+        #if value is 360 make it 0, otherwise just return the value
+        else:
+            translation = initialValue if initialValue != 360.0 else 0.0
+
+        return translation
+
     def setDirection(self, angle: float):
         """
         Change the direction the module is facing. Takes angle argument (degrees).
         """
         
-        self.turnMotor.set(ctre.ControlMode.MotionMagic, self.degreesToSensorUnits(angle))
+        self.turnMotor.set(ctre.ControlMode.MotionMagic, self.degreesToSensorUnits(angle) * constants.kgearRatio)
         
     def setSpeed(self, speed):
         """
@@ -97,8 +98,6 @@ class SwerveDrive:
         leftY = deadband(leftY)
         rightX = deadband(rightX)
 
-        wpilib.SmartDashboard.putNumberArray("LX, LY, RX", [leftX, leftY, rightX])
-
         #iterate through keys in dict (we can access each module this way)
         for key in self.modules.keys():
             
@@ -107,8 +106,8 @@ class SwerveDrive:
             module: SwerveModule #just for that sweet syntax highlighting
             
             #requestedAngle is the joystickInput given converted to degrees
-            requestedAngle = SwerveModule.joystickToDegrees(leftX, leftY, rightX)
-            
+            requestedAngle = module.joystickToDegrees(leftX, leftY, rightX)
+
             """
             to find magnitude use the pythagorean theorem. imagine a triangle
             on the joystick with the points not opposite the hypotenuse at (0, 0)
@@ -118,7 +117,7 @@ class SwerveDrive:
 
             magnitude = math.sqrt((leftX ** 2 + leftY ** 2))
 
-            #if magnitude is over 1 scale it down to 1
+            #if magnitude is over 1 scale it down to 1 (currently just making it one which gives inaccurate results for the other speeds)
             if magnitude >= 1.0:
                 magnitude = 1.0
             
@@ -145,8 +144,7 @@ class SwerveDrive:
                     """
                     self.angles[key] = oppositeAngle
                     self.speeds[key] = -magnitude
-                
-                wpilib.SmartDashboard.putNumberArray(f"{key}Angle+Speed", [self.angles[key], self.speeds[key]])
+
 
     #execute function is called automatically                
     def execute(self):
@@ -158,6 +156,8 @@ class SwerveDrive:
             module: SwerveModule #sweet sweet syntax highlighting
 
             #set the direction by converting the angle to sensor units and then multiplying by the ratio of the gears in the module.
-            module.setDirection(SwerveModule.degreesToSensorUnits(self.angles[key]) * constants.kgearRatio)
+            wpilib.SmartDashboard.putNumberArray(f"Output to {key}", [self.speeds[key], self.angles[key]])
+            module.setDirection(self.angles[key])
+
             #set speed
             module.setSpeed(self.speeds[key])

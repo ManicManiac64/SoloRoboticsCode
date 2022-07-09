@@ -13,16 +13,16 @@ class Larry(magicbot.MagicRobot):
     def createObjects(self):
         #modules (the order is driveMotor, then turnMotor)
         self.FLModule = components.swervedrive.SwerveModule(
-            ctre.TalonFX(constants.kFLD), ctre.TalonFX(constants.kFLT)
+            ctre.TalonFX(constants.kFLD), ctre.TalonFX(constants.kFLT),
             )
         self.BLModule = components.swervedrive.SwerveModule(
-            ctre.TalonFX(constants.kBLD), ctre.TalonFX(constants.kBLT)
+            ctre.TalonFX(constants.kBLD), ctre.TalonFX(constants.kBLT),
             )
         self.FRModule = components.swervedrive.SwerveModule(
-            ctre.TalonFX(constants.kFRD), ctre.TalonFX(constants.kFRT)
+            ctre.TalonFX(constants.kFRD), ctre.TalonFX(constants.kFRT),
             )
         self.BRModule = components.swervedrive.SwerveModule(
-            ctre.TalonFX(constants.kBRD), ctre.TalonFX(constants.kBRT)
+            ctre.TalonFX(constants.kBRD), ctre.TalonFX(constants.kBRT),
             )
         
         #controller

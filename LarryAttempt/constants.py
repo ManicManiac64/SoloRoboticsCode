@@ -18,6 +18,9 @@ kP = 0.01
 kI = 0.0
 kD = 0.0
 kF = 0.0455
+ktimeoutMs = 10
+kvelocity = 10567.0
+kacceleration = 10567.0
 
 #Physical
 kgearRatio = 150/7
