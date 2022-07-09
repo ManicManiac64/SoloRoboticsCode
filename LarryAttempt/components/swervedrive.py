@@ -82,6 +82,8 @@ class SwerveDrive:
     angles = {"FL" : 0, "BL" : 0, "FR" : 0, "BR" : 0}
     speeds = magicbot.will_reset_to({"FL" : 0, "BL" : 0, "FR" : 0, "BR" : 0})
 
+    max = magicbot.will_reset_to(1.0)
+
     def setup(self):
         self.gyro.calibrate()
         self.modules = {"FL" : self.FLModule, "BL" : self.BLModule, "FR" : self.FRModule, "BR" : self.BRModule}
@@ -117,10 +119,10 @@ class SwerveDrive:
 
             magnitude = math.sqrt((leftX ** 2 + leftY ** 2))
 
-            #if magnitude is over 1 scale it down to 1 (currently just making it one which gives inaccurate results for the other speeds)
-            if magnitude >= 1.0:
-                magnitude = 1.0
-            
+            #if magnitude is over 1 do this stuff
+            if magnitude >= 1.0 and magnitude >= self.max:
+                self.max = magnitude
+
             #the current angle is the current sensor units converted to degrees
             currentAngle = SwerveModule.sensorUnitsToDegrees(module.turnMotor.getSelectedSensorPosition())
             
@@ -144,6 +146,12 @@ class SwerveDrive:
                     """
                     self.angles[key] = oppositeAngle
                     self.speeds[key] = -magnitude
+
+        for key in self.speeds.keys():
+            self.speeds[key] /= self.max
+
+        wpilib.SmartDashboard.putNumberArray("FL/BL/FR/BR Angles", [float(angle) for angle in self.angles.values()])
+        wpilib.SmartDashboard.putNumberArray("FL/BL/FR/BR Speeds", [float(speed) for speed in self.speeds.values()])
 
 
     #execute function is called automatically                

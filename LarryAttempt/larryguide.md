@@ -72,6 +72,6 @@ Can't be that hard, right?
 
 That's right, we're gaming now. Whether we're good at it or not is yet to be determined. On most swerve drive robots, the robot is controlled with three joystick values. The leftX and leftY values control the translation, while the rightX controls rotation. The rightX controls the speed of rotation, not the exact angle, which is neat and good. Swerve drive is very easy to drive, and also a living hell to code.
 
-Let's begin by just focusing on the left joystick translating the robot. Rotation is pretty important, but not as important as actually moving the robot.
+Let's begin by just focusing on the left joystick translating the robot. Rotation is pretty important, and also something I don't grasp at the moment, but not as important as actually moving the robot.
 
 insert more guide here
