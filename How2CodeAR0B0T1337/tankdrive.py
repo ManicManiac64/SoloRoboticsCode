@@ -1,6 +1,4 @@
-from turtle import left, right
 import wpilib
-import wpilib.drive
 import ctre
 
 class TankBot(wpilib.TimedRobot):

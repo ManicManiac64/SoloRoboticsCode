@@ -1,0 +1,49 @@
+# GITHUB
+
+Thanks for the introduction, disembodied header!
+
+## I ONLY WORK SO I CAN PAY FOR MY CHILDREN'S EDUCATION
+
+You have children?
+
+## YES
+
+Okie dokie! Let's get to work on GitHub!
+
+# BUT FIRST, GIT
+
+No.
+
+## DO IT OR I QUIT
+
+I can fire you whenever I want, disembodied header.
+
+There's a lot of words we can use to describe Git. A distributed version control system. A three-letter-word. A folder, but on a bunch of different computers where anybody can edit it. Think of Git as a way to share files very easily between people. We can create a repository, or *repo* of files that anybody can clone and edit. Then, that anybody can push their version of the repository to the main, super cool one, and change the files. It's very cool. But in order to do anything in it, we have to do everything on the command-line, which is pretty boring.
+
+If you don't have to use Git, don't use Git. Git walked so GitHub could run.
+
+## AND NOW, GITHUB
+
+GitHub is an online hosting site that hosts, well, Git repos. It makes using Git much easier, and it being on the Internet is pretty cool. Use it instead of Git. Please.
+
+Provided you're using one of the laptops we have at Robotics, you should have GitHub installed, so don't worry about all that funny business with installing. You should be able to find files from GitHub in the Documents folder. You can edit them, delete them, create new ones, et cetera. **Or don't.**
+
+## CLONING REPOSITORIES
+
+Let's say Harald Hardrada is back from the dead and hacking into my GitHub account, hypothetically. Wow! Who knew he was so good at coding! Why, he just programmed an entire robot, and made a repository for it. Too bad I don't have that repo on my computer.
+
+**OH WAIT, I CAN!!!**
+
+To clone a repository, you'll need the URL for it. Let's say Harald Hardrada's repo is called "TestRepo". The URL should be, provided he made it when he hacked into my account, [https://github.com/CringeCodin/TestRepo.](https://github.com/CringeCodin/TestRepo)
+
+Obviously you don't need to do 4-dimensional math to find the URL, you can just head to anybody's profile to view their repositories. Either way, once you have the URL, enter the GitHub Desktop application, and go to File (at the top) > Clone repository
+
+<img src="Images/clone1.png" alt="Step 1 to clone repo." width="500"/>
+
+Next, go to URL, paste the link of the repository you want to clone into the Repository URL box, and then specify a path for the repo. By default it'll be saved in the GitHub folder in Documents, but you can change that.
+
+<img src="Images/clone2.png" alt="Step 2 to clone repo." width="500"/>
+
+## PUSHING COMMITS
+
+Think of a commit as a specific version of your repo, like a photograph. 
