@@ -1,26 +1,26 @@
 #Motor IDs (helpful key: F = front, B = back, L = left, R = right, D = drive, T = turn)
-kFLD = 0 
-kBLD = 1
-kFRD = 2
-kBRD = 3
+FLD = 0 
+BLD = 1
+FRD = 2
+BRD = 3
 
-kFLT = 4
-kBLT = 5
-kFRT = 6
-kBRT = 7
+FLT = 4
+BLT = 5
+FRT = 6
+BRT = 7
 
 #driver controller port
-kdriverControllerPort = 0
-kdeadband = 0.085
+DRIVER_CONTROLLER_PORT = 0
+DEADBAND = 0.085
 
 #PID
-kP = 0.01
-kI = 0.0
-kD = 0.0
-kF = 0.0455
-ktimeoutMs = 10
-kvelocity = 10567.0
-kacceleration = 10567.0
+P = 0.01
+I = 0.0
+D = 0.0
+F = 0.0455
+TIMEOUT_MS = 10
+VELOCITY = 10567.0
+ACCELERATION = 10567.0
 
 #Physical
-kgearRatio = 150/7
+GEAR_RATIO = 150/7

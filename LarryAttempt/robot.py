@@ -13,20 +13,20 @@ class Larry(magicbot.MagicRobot):
     def createObjects(self):
         #modules (the order is driveMotor, then turnMotor)
         self.FLModule = components.swervedrive.SwerveModule(
-            ctre.TalonFX(constants.kFLD), ctre.TalonFX(constants.kFLT),
+            ctre.TalonFX(constants.FLD), ctre.TalonFX(constants.FLT),
             )
         self.BLModule = components.swervedrive.SwerveModule(
-            ctre.TalonFX(constants.kBLD), ctre.TalonFX(constants.kBLT),
+            ctre.TalonFX(constants.BLD), ctre.TalonFX(constants.BLT),
             )
         self.FRModule = components.swervedrive.SwerveModule(
-            ctre.TalonFX(constants.kFRD), ctre.TalonFX(constants.kFRT),
+            ctre.TalonFX(constants.FRD), ctre.TalonFX(constants.FRT),
             )
         self.BRModule = components.swervedrive.SwerveModule(
-            ctre.TalonFX(constants.kBRD), ctre.TalonFX(constants.kBRT),
+            ctre.TalonFX(constants.BRD), ctre.TalonFX(constants.BRT),
             )
         
         #controller
-        self.driverController = wpilib.XboxController(constants.kdriverControllerPort)
+        self.driverController = wpilib.XboxController(constants.DRIVER_CONTROLLER_PORT)
 
         #gyro (for field centric drive)
         self.gyro = wpilib.ADXRS450_Gyro()
