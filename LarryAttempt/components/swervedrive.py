@@ -6,7 +6,7 @@ import ctre
 import constants
 
 def deadband(x):
-    return x if abs(x) > constants.DEADBAND else 0.0
+    return x if abs(x) > constants.kdeadband else 0.0
 
 class SwerveModule:
     """
@@ -61,7 +61,7 @@ class SwerveModule:
         Change the direction the module is facing. Takes angle argument (degrees).
         """
         
-        self.turnMotor.set(ctre.ControlMode.MotionMagic, self.degreesToSensorUnits(angle) * constants.GEAR_RATIO)
+        self.turnMotor.set(ctre.ControlMode.MotionMagic, self.degreesToSensorUnits(angle) * constants.kgearRatio)
         
     def setSpeed(self, speed):
         """
