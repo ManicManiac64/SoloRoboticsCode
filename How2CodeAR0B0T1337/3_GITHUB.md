@@ -38,12 +38,44 @@ To clone a repository, you'll need the URL for it. Let's say Harald Hardrada's r
 
 Obviously you don't need to do 4-dimensional math to find the URL, you can just head to anybody's profile to view their repositories. Either way, once you have the URL, enter the GitHub Desktop application, and go to File (at the top) > Clone repository
 
-<img src="Images/clone1.png" alt="Step 1 to clone repo." width="500"/>
+<img src="Images/clone1.png" title="Step 1 to clone repo." width="500"/>
 
 Next, go to URL, paste the link of the repository you want to clone into the Repository URL box, and then specify a path for the repo. By default it'll be saved in the GitHub folder in Documents, but you can change that.
 
-<img src="Images/clone2.png" alt="Step 2 to clone repo." width="500"/>
+<img src="Images/clone2.png" title="Step 2 to clone repo." width="500"/>
 
 ## PUSHING COMMITS
 
-Think of a commit as a specific version of your repo, like a photograph. 
+Think of a commit as a specific version of your repo, like a photograph. A memory. Pepperidge Farms remembers all your commits...
+
+## SNAP OUT OF IT MAN
+
+Right, yeah, so let's say you added a file in TestRepo, and you want everybody's repository to reflect that change. We need to push your commit to the repo. First, we need to actually create the commit. To do this, go to the GitHub Desktop application. You should see in the bottom left corner a little box that you can enter text into and also a big nice *commit* button. By default, the text should say *Create yourfile.py*, because that's what you did. However, you can change that to be whatever you want. You can also add a description to get more detailed about what you did. Then, you'll just hit *Commit* and you'll have a commit created!
+
+<img src="Images/createcommit.png" title="Creating a commit." width="500"/>
+
+However, we still need to push our file. To do this, navigate to the top of the screen where you'll see a little button that says *Push origin*. Just hit that.
+
+<img src="Images/toolbar.png" title="Pushing a commit." width="500"/>
+
+If you look at the repository online, you should see your changes!
+
+<img src="Images/pushedcommit.png" title="A pushed commit." width="500"/>
+
+By the way, you've probably noticed the *to main* I conveniently ignored up there. *main* is the main branch in the repo. You can create many different branches that can then be merged. Don't worry about that for now, though.
+
+## PULLING COMMITS
+
+Let's say Harald Hardrada didn't like that your code referenced a Monty Python sketch that makes fun of Vikings, and changed it so it instead makes fun of airplane food. Now let's say that you, to extend a hand of peace, want to pull the commit he's pushed to the repository. Let's go over pulling commits.
+
+To pull a commit, go into the GitHub Desktop application (I know I sound like a broken record, but I don't care that much), and fetch the origin of the repo. It should be in the same place the *Push origin* button was.
+
+<img src="Images/fetch.png" title="The fetch button." width="500"/>
+
+In its place, the *Pull origin* button should appear. Click it, and the new changes will save to your computer.
+
+<img src="Images/pull.png" title="The pull button." width="500"/>
+
+## CONCLUSION
+
+That's about everything you need to know about GitHub. Next, we'll go over different frameworks you can use when programming a robot.

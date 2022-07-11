@@ -18,6 +18,9 @@ class TankBot(wpilib.TimedRobot):
         self.FRMotor.setNeutralMode(ctre.NeutralMode.Brake)
         self.BRMotor.setNeutralMode(ctre.NeutralMode.Brake)
 
+        self.FRMotor.setInverted(True)
+        self.BRMotor.setInverted(True)
+
         self.driverController = wpilib.XboxController(0)
 
     def teleopPeriodic(self):

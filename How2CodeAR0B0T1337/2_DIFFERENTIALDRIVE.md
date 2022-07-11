@@ -78,19 +78,26 @@ self.FRMotor.setNeutralMode(ctre.NeutralMode.Brake)
 self.BRMotor.setNeutralMode(ctre.NeutralMode.Brake)
 ```
 
+We also need to invert the right side so the left and right side spin the same way:
+
+```python
+self.FRMotor.setInverted(True)
+self.BRMotor.setInverted(True)
+```
+
 Finally, we'll just add an Xbox controller so we can control the robot. Here's where we need to make a distinction between the ports we use for things connected to the computer, and the device numbers for the motors. These are two different things. There may be a device connected to port 0 as well as a motor controller with a device number of 0. 
 
-## They are not the same object!
+## They are not the same thing!
 
 Thanks, disembodied header. Anyway, to create the Xbox controller, use the `wpilib.XboxController` class and pass the port to use for it. Let's use port 0.
 
-```
+```python
 self.driverController = wpilib.XboxController(0)
 ```
 
 We're finally done initializing the robot! Here's what your code should look like, more or less:
 
-```
+```python
 import wpilib
 import ctre
 
@@ -110,6 +117,9 @@ class TankBot(wpilib.TimedRobot):
         self.BLMotor.setNeutralMode(ctre.NeutralMode.Brake)
         self.FRMotor.setNeutralMode(ctre.NeutralMode.Brake)
         self.BRMotor.setNeutralMode(ctre.NeutralMode.Brake)
+
+        self.FRMotor.setInverted(True)
+        self.BRMotor.setInverted(True)
 
         self.driverController = wpilib.XboxController(0)
 ```
@@ -183,3 +193,7 @@ class TankBot(wpilib.TimedRobot):
 if __name__ == "__main__":
     wpilib.run(TankBot)
 ```
+
+That's it! Now you have working tank drive code! You're a robot programmer now! You're cool! ~~Not as cool as *I* constantly am., though.~~
+
+Next, we'll go over GitHub, why we use it, and how to use it.
