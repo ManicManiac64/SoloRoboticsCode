@@ -1,16 +1,14 @@
-## THE COMMAND-BASED FRAMEWORK
+RobotPy does not provide documentation for the command-based framework as of 2022, but you can look at the [C++/Java docs](https://docs.wpilib.org/en/stable/docs/software/commandbased/index.html) for further information.
 
-The command-based framework is the first framework we'll be going over, because it's the one we used during Rapid React. It's very important to know how it works, because it's the framework most used by people programming robots with Java and C++, the two most popular languages to code with in FRC.
+# THE COMMAND-BASED FRAMEWORK
 
-However, I don't like the command-based framework in Python. I'll talk about why after I've gone over this framework, as well as the next one I'll go over, the MagicBot Framework. We'll get to that later. For now, let's learn about the command-based framework.
-
-By the way, on the topic of code here, I'd say pick one framework to code for here, don't code for both, because frankly, that's just too much work.
+The command-based framework is the framework we'll be going over, because it's the one we used during Rapid React. I love another framework, the MagicBot framework, but it's not something I've mastered, so I don't think I'm ready to teach it just yet, especially because I'm already not exactly an expert at teaching. If you want to learn more about it, however, here's the [documentation](https://robotpy.readthedocs.io/en/latest/frameworks/magicbot.html) for it, and I'm happy to try and help you with anything regarding it, since documentation isn't perfect.
 
 ## FILE STRUCTURE
 
-Every framework has a different file structure. The command-based framework breaks robots down into subsystems and commands. Subsystems are basic units of the robot like the drivetrain, the climber, and the intake. Commands are simply, well, commands, that cause the subsystems to perform actions. You could have a drivetrain subsystem with motors, and then a command to drive the drivetrain subsystem with joysticks. It breaks code apart into easily manageable pieces.
+Every robot framework has a different file structure. The command-based framework breaks robots down into subsystems and commands. Subsystems are basic units of the robot like the drivetrain, the climber, and the intake. Commands are simply, well, commands. They're state machines that cause the subsystems to perform actions. On that note, a state machine is essentially an abstract machine that changes states based on input, in this case, something like the state of a motor based on joystick input. You could have a drivetrain subsystem with motors, and then a command to drive the drivetrain subsystem with joysticks. It breaks code apart into easily manageable pieces.
 
-Something you should probably start doing when you have multi-file projects is use a `constants` file. This will allow you to put all your important constants throughout your project into one file where you can easily change values. For example, the `constants` file for that tank drive code you wrote earlier might look like this:
+Something you should probably start doing when you have multi-file projects like this is using a `constants` file. This will allow you to put all your important constants throughout your project into one file where you can easily change values. For example, the `constants` file for that tank drive code you wrote earlier might look like this:
 
 ```
 kFL = 0
@@ -50,7 +48,7 @@ In this file, we'll inherit from `wpilib`, `ctre`, `commands2` (for the command-
 
 Next, we need to create a class for the drivetrain that inherits from `commands2.SubsystemBase`. This class is exactly what it sounds like: a base for subsystems. Wow! We'll then create an `__init__` function for the subsystem that begins by calling the `__init__` function of `SubsystemBase`. We can accomplish this by doing `super().__init__()`, `super()` referring to the parent class.
 
-The rest of your code initializing the subsystem can just be copied and pasted from your tank drive code. Here's what it should look like so far:
+The rest of your code initializing the subsystem can just be copied and pasted from your tank drive code, but with your constants added in. Here's what it should look like so far:
 
 ```python
 import wpilib
@@ -252,7 +250,11 @@ Anyways, next we'll create our robot class. Make a class, and call it whatever y
 
 Getting off that tangent/near-tangent, let's create our `robotInit` method, where we'll create our robot container. I'll call my variable `self.container`, because, again, I'm not fun at parties. This container should obviously be an instance of our robot container class.
 
-Here's something neat: In this case, there shouldn't be anything else we have to do. `commands2` does basically everything for us, which means you're basically done, probably! Probably......
+Next, we'll just add our `if __name_ == "__main__"` line.
+
+Here's something neat: In this case, there shouldn't be anything else we have to do. `commands2` does basically everything for us, which means you're basically done, probably! 
+
+Probably......
 
 ...
 
@@ -260,7 +262,7 @@ Here's something neat: In this case, there shouldn't be anything else we have to
 
 ...
 
-Yeah, no, you're done, I just wanted to seem ominous. There'd be a bit more we'd have to do, in the `robotcontainer` file and in the `robot` file if we wanted to do other, more complicated things, like autonomous mode (which we'll go over soon), but not now.
+Yeah, no, you're done, I just wanted to seem ominous. There'd be a bit more we'd have to do, in the `robotcontainer` file and in the `robot` file if we wanted to do other, more complicated things, like autonomous mode (which we'll go over soon), but in this case, nothing to really do.
 
 Here's what your final `robot` code should look like:
 
@@ -283,4 +285,4 @@ So there you have it, your first multi-file robot thingy in the command, uh, you
 
 ## REALLY?
 
-Shut up, disembodied header, you're not a part of this! But yes, there's more! Exclusively in RobotPy, there's a super neat framework called the MagicBot Framework. You can do ***STUFF*** with it?!?!?!?! Yeah, we'll be going over that next.
+No. Moving on, we'll be going over implementing autonomous commands. They're commands, but autonomous?!?!?!?!

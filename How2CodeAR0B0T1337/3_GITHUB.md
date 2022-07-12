@@ -78,4 +78,4 @@ In its place, the *Pull origin* button should appear. Click it, and the new chan
 
 ## CONCLUSION
 
-That's about everything you need to know about GitHub. Next, we'll go over different frameworks you can use when programming a robot.
+That's about everything you need to know about GitHub. Next, we'll go over the command-based framework, a framework you can use when programming robots that's command-based.
