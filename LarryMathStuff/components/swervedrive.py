@@ -19,14 +19,16 @@ class SwerveModule:
     def __init__(self, driveMotorID: int, turnMotorID: int):
         
         self.driveMotor = ctre.TalonFX(driveMotorID)
-        self.turnMotor = ctre.TalonFX(turnMotorID)        
+        self.turnMotor = ctre.TalonFX(turnMotorID)
+        self.reversedAngle = False
 
     def setSpeed(self, magnitude):
         
         self.driveMotor.set(ctre.TalonFXControlMode.PercentOutput, magnitude)
 
     def setDirection(self, angle):
-
+        
+        self.reversedAngle.setInverted(self.reversedAngle)
         self.turnMotor.set(ctre.TalonFXControlMode.Position, self.degreesToSensorUnits(angle))
 
 class SwerveDrive:
@@ -112,18 +114,22 @@ class SwerveDrive:
             if minimum == cloFor:
                 self.angles[key] = bForward
                 self.speeds[key] *= 1
+                module.reversedAngle = False
                 
             elif minimum == couFor:
                 self.angles[key] = bForward
                 self.speeds[key] *= 1
+                module.reversedAngle = False
                 
             elif minimum == cloRev:
                 self.angles[key] = bReverse
                 self.speeds[key] *= -1
+                module.reversedAngle = True
                 
             elif minimum == couRev:
                 self.angles[key] = bReverse
                 self.speeds[key] *= -1
+                module.reversedAngle = True
                 
     def execute(self):
         """
