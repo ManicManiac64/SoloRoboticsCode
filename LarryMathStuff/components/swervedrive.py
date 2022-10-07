@@ -1,4 +1,3 @@
-from re import S
 import magicbot
 import ctre
 import constants
