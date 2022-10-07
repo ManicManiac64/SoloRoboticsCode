@@ -10,11 +10,11 @@ class SwerveModule:
     
     @staticmethod
     def sensorUnitsToDegrees(su: float) -> float:
-        return su * (360/2048)
+        return (su * (360/2048)) % 360
     
     @staticmethod
     def degreesToSensorUnits(deg: float) -> float:
-        return deg * (2048/360)
+        return (deg * (2048/360)) % 2048
 
     def __init__(self, driveMotorID: int, turnMotorID: int):
         
