@@ -72,11 +72,12 @@ class SwerveDrive:
         self.speeds["FL"] = (b ** 2 + d ** 2) ** 0.5
         self.speeds["BL"] = (a ** 2 + d ** 2) ** 0.5
         self.speeds["BR"] = (a ** 2 + c ** 2) ** 0.5
-
-        self.angles["FR"] = (math.degrees(math.atan2(b, c)) + 360) % 360
-        self.angles["FL"] = (math.degrees(math.atan2(b, d)) + 360) % 360
-        self.angles["BL"] = (math.degrees(math.atan2(a, d)) + 360) % 360
-        self.angles["BR"] = (math.degrees(math.atan2(a, c)) + 360) % 360
+        
+        #modulo 360 changes negative angles to positive
+        self.angles["FR"] = (math.degrees(math.atan2(b, c))) % 360
+        self.angles["FL"] = (math.degrees(math.atan2(b, d))) % 360
+        self.angles["BL"] = (math.degrees(math.atan2(a, d))) % 360
+        self.angles["BR"] = (math.degrees(math.atan2(a, c))) % 360
 
         #optimize speeds
         maxi = max(self.speeds.values())
@@ -86,19 +87,45 @@ class SwerveDrive:
                 self.speeds[key] /= maxi
 
         #optimize angles
+        #the key to this is finding 4 differences, going clockwise or counter, and forward or reversing the wheel's speed
         for key in self.modules.keys():
             module = self.modules[key]
-            a = SwerveModule.sensorUnitsToDegrees(module.turnMotor.getSelectedSensorPosition())
-            b = self.angles[key]
-        
-            dir = (b % 360.0) - (a % 360.0)
-
-            if (abs(dir) > 180.0):
             
-                dir = -(math.copysign(1, dir) * 360.0) + dir
-
-            self.angles[key] = (dir + 360) % 360
-
+            #again modulo 360 changes negative angles to positive (and positive to positive, of course)
+            a = SwerveModule.sensorUnitsToDegrees(module.turnMotor.getSelectedSensorPosition()) % 360
+            bForward = self.angles[key]
+            
+            #clockwise and forward distance
+            cloFor = bForward - a if a <= bForward else (360 - a) + bForward
+            #counter and forward distance
+            couFor = a - bForward if bForward <= a else (360 - bForward) + a
+            
+            #reverse angle
+            bReverse = (bForward + 180) % 360
+            #clockwise and reverse distance
+            cloRev = bReverse - a if a <= bReverse else (360 - a) + bReverse
+            #counter and reverse distance
+            couRev = a - bReverse if bReverse <= a else (360 - bReverse) + a
+            
+            #find minimum
+            minimum = min(cloFor, couFor, cloRev, couRev)
+            
+            if minimum == cloFor:
+                self.angles[key] = bForward
+                self.speeds[key] *= 1
+                
+            elif minimum == couFor:
+                self.angles[key] = bForward
+                self.speeds[key] *= 1
+                
+            elif minimum == cloRev:
+                self.angles[key] = bReverse
+                self.speeds[key] *= -1
+                
+            elif minimum == couRev:
+                self.angles[key] = bReverse
+                self.speeds[key] *= -1
+                
     def execute(self):
         """
         Called every loop.
