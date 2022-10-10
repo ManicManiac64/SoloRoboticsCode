@@ -28,7 +28,7 @@ class SwerveModule:
 
     def setDirection(self, angle):
         
-        self.reversedAngle.setInverted(self.reversedAngle)
+        self.turnMotor.setInverted(self.reversedAngle)
         self.turnMotor.set(ctre.TalonFXControlMode.Position, self.degreesToSensorUnits(angle))
 
 class SwerveDrive:
