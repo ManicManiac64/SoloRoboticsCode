@@ -1,10 +1,19 @@
-import magicbot
+# ctre is used to control CTRE-branded stuff, like the TalonFX (TM)
+# constants of course stores all the constants we use (stuff that doesn't change, stays constant)
+# math does math stuff, like atan (arctan if you're a mathematician)
+
 import ctre
 import constants
 import math
 
+# deadbands basically create a range around 0 and if a value is in that range we'll change the value to 0
+# for example we could have a deadband between -0.05 and 0.05 and say if a value is in that range, we'll just round it to 0
+# this helps get rid of tiny movements
+
 def deadband(x):
     return x if abs(x) > constants.deadband else 0
+
+# swerve module class
 
 class SwerveModule:
     
