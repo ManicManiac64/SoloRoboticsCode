@@ -1,5 +1,4 @@
 from magicbot import AutonomousStateMachine, timed_state, state
-import wpilib
 
 from components.drivetrain import Drivetrain
 
