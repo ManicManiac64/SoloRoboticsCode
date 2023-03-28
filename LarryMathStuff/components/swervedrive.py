@@ -25,10 +25,12 @@ class SwerveModule:
     def degreesToSensorUnits(deg: float) -> float:
         return (deg * (2048/360)) % 2048
 
-    def __init__(self, driveMotorID: int, turnMotorID: int):
+    def __init__(self, driveMotorID: int, turnMotorID: int, encoderID: int):
         
         self.driveMotor = ctre.TalonFX(driveMotorID)
         self.turnMotor = ctre.TalonFX(turnMotorID)
+        self.encoder = ctre.CANCoder(encoderID)
+
         self.reversedAngle = False
 
     def setSpeed(self, magnitude):
