@@ -28,16 +28,17 @@ class Larry(magicbot.MagicRobot):
 
         # four swerve modules that take the drive motor id and the turn motor id
 
-        self.FRModule = components.swervedrive.SwerveModule(constants.FRDRIVE, constants.FRANGLE, constants.FRENCODER)
-        self.FLModule = components.swervedrive.SwerveModule(constants.FLDRIVE, constants.FLANGLE, constants.FLENCODER)
-        self.BLModule = components.swervedrive.SwerveModule(constants.BLDRIVE, constants.BLANGLE, constants.BLENCODER)
-        self.BRModule = components.swervedrive.SwerveModule(constants.BRDRIVE, constants.BRANGLE, constants.BRENCODER)
+        self.FRModule = components.swervedrive.SwerveModule(constants.FRDRIVE, constants.FRANGLE)
+        self.FLModule = components.swervedrive.SwerveModule(constants.FLDRIVE, constants.FLANGLE)
+        self.BLModule = components.swervedrive.SwerveModule(constants.BLDRIVE, constants.BLANGLE)
+        self.BRModule = components.swervedrive.SwerveModule(constants.BRDRIVE, constants.BRANGLE)
         
-        # the driverController is an XboxController used to control the robot. The gyro is a gyroscope, and reset() resets the gyroscope. We do this so the gyroscope doesn't use values from the last time the robot was on.
+        # the driverController is an XboxController used to control the robot. The gyro is a gyroscope, and calibrate() calibrates the gyroscope
 
         self.driverController = wpilib.XboxController(0)
-        self.gyro = wpilib.ADXRS450_Gyro()
-        self.gyro.reset()
+        self.gyro = wpilib.ADIS16470_IMU()
+        self.gyro.setYawAxis(wpilib.ADIS16470_IMU.IMUAxis.kZ)
+        self.gyro.calibrate()
 
     def teleopPeriodic(self):
         """
@@ -46,7 +47,7 @@ class Larry(magicbot.MagicRobot):
 
         #this move function takes joystick values, and the rotation of the gyro converted to degrees, and will give us the right values for the motors.
 
-        self.drive.move(self.driverController.getLeftX(), -self.driverController.getLeftY(), self.driverController.getRightX(), self.gyro.getRotation2d().degrees() % 360)
+        self.drive.move(self.driverController.getLeftX(), -self.driverController.getLeftY(), self.driverController.getRightX(), self.gyro.getAngle() % 360)
 
 if __name__ == '__main__':
     wpilib.run(Larry)
