@@ -2,6 +2,7 @@
 # constants of course stores all the constants we use (stuff that doesn't change, stays constant)
 # math does math stuff, like atan (arctan if you're a mathematician)
 
+import wpilib
 import ctre
 import constants
 import math
@@ -29,8 +30,9 @@ class SwerveModule:
         
         self.driveMotor = ctre.TalonFX(driveMotorID)
         self.turnMotor = ctre.TalonFX(turnMotorID)
-        self.encoder = ctre.CANCoder(encoderID)
-
+        
+        self.pidController = wpilib.PIDController(0.5, 0.0, 0.0)
+        
         self.reversedAngle = False
 
     def setSpeed(self, magnitude):
@@ -53,14 +55,13 @@ class SwerveDrive:
     BLModule: SwerveModule
     BRModule: SwerveModule
 
-    speeds = {"FR" : 0, "FL" : 0, "BL" : 0, "BR" : 0}
-    angles = {"FR" : 0, "FL" : 0, "BL" : 0, "BR" : 0}
-
     def setup(self):
         """
         Setup things created in the beginning of the class.
         """
         self.modules = {"FR" : self.FRModule, "FL" : self.FLModule, "BL" : self.BLModule, "BR" : self.BRModule}
+        self.speeds = {"FR" : 0, "FL" : 0, "BL" : 0, "BR" : 0}
+        self.angles = {"FR" : 0, "FL" : 0, "BL" : 0, "BR" : 0}
 
     def move(self, leftX, leftY, rightX, gyroAngle):
         """
