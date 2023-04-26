@@ -3,6 +3,7 @@
 # math does math stuff, like atan (arctan if you're a mathematician)
 
 import wpilib
+from wpilib.controller import PIDController
 import ctre
 import constants
 import math
@@ -40,6 +41,8 @@ class SwerveModule:
         self.driveMotor.set(ctre.TalonFXControlMode.PercentOutput, magnitude)
 
     def setDirection(self, angle):
+        
+        # insert pid stuff here
         
         self.turnMotor.setInverted(self.reversedAngle)
         self.turnMotor.set(ctre.TalonFXControlMode.Position, self.degreesToSensorUnits(angle))
