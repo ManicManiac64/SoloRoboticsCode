@@ -32,7 +32,7 @@ class SwerveModule:
         self.driveMotor = ctre.TalonFX(driveMotorID)
         self.turnMotor = ctre.TalonFX(turnMotorID)
         
-        self.pidController = wpilib.PIDController(0.5, 0.0, 0.0)
+        self.PIDController = wpilib.PIDController(0.5, 0.0, 0.0)
         
         self.reversedAngle = False
 
@@ -42,10 +42,14 @@ class SwerveModule:
 
     def setDirection(self, angle):
         
-        # insert pid stuff here
+        output = 0
+        currentAngle = SwerveModule.sensorUnitsToDegrees(module.turnMotor.getSelectedSensorPosition())
         
-        self.turnMotor.setInverted(self.reversedAngle)
-        self.turnMotor.set(ctre.TalonFXControlMode.Position, self.degreesToSensorUnits(angle))
+        # insert pid stuff here
+        if abs(angle - currentAngle) >= 2:
+            output = max(min(self.PIDController.calculate(SwerveModule.degreesToSensorUnits(currentAngle), SwerveModule.degreesToSensorUnits(angle)), 1), -1)
+            self.turnMotor.setInverted(self.reversedAngle)
+            self.turnMotor.set(output)
 
 class SwerveDrive:
     
@@ -108,7 +112,7 @@ class SwerveDrive:
             module = self.modules[key]
             
             #again modulo 360 changes negative angles to positive (and positive to positive, of course)
-            a = SwerveModule.sensorUnitsToDegrees(module.turnMotor.getSelectedSensorPosition()) % 360
+            a = SwerveModule.sensorUnitsToDegrees(module.turnMotor.getSelectedSensorPosition())
             bForward = self.angles[key]
             
             #clockwise and forward distance
@@ -134,12 +138,12 @@ class SwerveDrive:
             elif minimum == couFor:
                 self.angles[key] = bForward
                 self.speeds[key] *= 1
-                module.reversedAngle = False
+                module.reversedAngle = True
                 
             elif minimum == cloRev:
                 self.angles[key] = bReverse
                 self.speeds[key] *= -1
-                module.reversedAngle = True
+                module.reversedAngle = False
                 
             elif minimum == couRev:
                 self.angles[key] = bReverse
