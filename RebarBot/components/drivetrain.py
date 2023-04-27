@@ -41,10 +41,14 @@ class Drivetrain:
         # define differential drive (we'll use it for our tank drive)
         self.drive = wpilib.drive.DifferentialDrive(self.FLMotor, self.FRMotor)
 
+        wpilib.SmartDashboard.putBooleanArray("L, R", [self.FLMotor.getInverted(), self.FRMotor.getInverted()])
+
     def move(self, left, right):
         # these values will be used in execute, making this a setter/control function
         self.left = left if abs(left) >= 0.05 else 0  # this is a deadband. google it
         self.right = right if abs(right) >= 0.05 else 0  # deadband, more like one direction, ha get it? 'cause they're a d-oh whatever, moving on
+
+        wpilib.SmartDashboard.putNumberArray("L, R", [self.left, self.right])
 
     # this is what actually does stuff, w-w-w-w-woah! cool beans B)
     def execute(self):

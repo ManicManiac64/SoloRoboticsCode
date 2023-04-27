@@ -24,7 +24,7 @@ class RebarBot(magicbot.MagicRobot):
         self.BRMotor = ctre.WPI_TalonFX(constants.BRMotorPort)
 
         # controller
-        self.driverController = wpilib.PS4Controller(constants.driverControllerPort)
+        self.driverController = wpilib.XboxController(constants.driverControllerPort)
 
     def teleopInit(self):
         '''When teleop starts, this will be called'''
