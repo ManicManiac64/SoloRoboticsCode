@@ -3,7 +3,7 @@
 # math does math stuff, like atan (arctan if you're a mathematician)
 
 import wpilib
-from wpilib.controller import PIDController
+import wpimath.controller
 import ctre
 import constants
 import math
@@ -27,12 +27,12 @@ class SwerveModule:
     def degreesToSensorUnits(deg: float) -> float:
         return (deg * (2048/360)) % 2048
 
-    def __init__(self, driveMotorID: int, turnMotorID: int, encoderID: int):
+    def __init__(self, driveMotorID: int, turnMotorID: int):
         
         self.driveMotor = ctre.TalonFX(driveMotorID)
         self.turnMotor = ctre.TalonFX(turnMotorID)
         
-        self.PIDController = wpilib.PIDController(0.5, 0.0, 0.0)
+        self.PIDController = wpimath.controller.PIDController(0.5, 0.0, 0.0)
         
         self.reversedAngle = False
 
@@ -43,13 +43,13 @@ class SwerveModule:
     def setDirection(self, angle):
         
         output = 0
-        currentAngle = SwerveModule.sensorUnitsToDegrees(module.turnMotor.getSelectedSensorPosition())
+        currentAngle = SwerveModule.sensorUnitsToDegrees(self.turnMotor.getSelectedSensorPosition())
         
         # insert pid stuff here
         if abs(angle - currentAngle) >= 2:
             output = max(min(self.PIDController.calculate(SwerveModule.degreesToSensorUnits(currentAngle), SwerveModule.degreesToSensorUnits(angle)), 1), -1)
             self.turnMotor.setInverted(self.reversedAngle)
-            self.turnMotor.set(output)
+            self.turnMotor.set(ctre.ControlMode.PercentOutput, output)
 
 class SwerveDrive:
     
@@ -154,6 +154,7 @@ class SwerveDrive:
         """
         Called every loop.
         """
+        
 
         for key in self.modules.keys():
             self.modules[key].setSpeed(self.speeds[key])

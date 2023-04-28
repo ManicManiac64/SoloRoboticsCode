@@ -36,9 +36,13 @@ class Larry(magicbot.MagicRobot):
         # the driverController is an XboxController used to control the robot. The gyro is a gyroscope, and calibrate() calibrates the gyroscope
 
         self.driverController = wpilib.XboxController(0)
+
         self.gyro = wpilib.ADIS16470_IMU()
-        self.gyro.setYawAxis(wpilib.ADIS16470_IMU.IMUAxis.kZ)
-        self.gyro.calibrate()
+
+        if wpilib.RobotBase.isReal():
+
+            self.gyro.setYawAxis(wpilib.ADIS16470_IMU.IMUAxis.kZ)
+            self.gyro.calibrate()
 
     def teleopPeriodic(self):
         """
