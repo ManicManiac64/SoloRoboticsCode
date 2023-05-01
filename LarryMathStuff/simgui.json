@@ -6,6 +6,9 @@
     }
   },
   "NetworkTables": {
+    "SmartDashboard": {
+      "open": true
+    },
     "transitory": {
       "SmartDashboard": {
         "FR": {

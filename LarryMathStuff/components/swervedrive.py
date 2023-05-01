@@ -149,6 +149,9 @@ class SwerveDrive:
                 self.angles[key] = bReverse
                 self.speeds[key] *= -1
                 module.reversedAngle = True
+
+        wpilib.SmartDashboard.putNumberArray("Angles", [self.angles["FR"], self.angles["FL"], self.angles["BL"], self.angles["BR"]])
+        
                 
     def execute(self):
         """
