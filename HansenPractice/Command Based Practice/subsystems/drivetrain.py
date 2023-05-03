@@ -15,6 +15,7 @@ class Drivetrain(commands2.SubsystemBase):
         self.BRMotor.follow(self.FRMotor)
 
         self.FRMotor.setInverted(True)
+        self.BRMotor.setInverted(True)
 
         self.FLMotor.setNeutralMode(ctre.NeutralMode.Brake)
         self.BLMotor.setNeutralMode(ctre.NeutralMode.Brake)
@@ -23,10 +24,10 @@ class Drivetrain(commands2.SubsystemBase):
 
     def joystickDriving(self, leftJoy, rightJoy):
         leftJoy = 0 if abs(leftJoy) <= 0.05 else leftJoy
-        rightJoy = 0 if abs(leftJoy) <= 0.05 else rightJoy
+        rightJoy = 0 if abs(rightJoy) <= 0.05 else rightJoy
 
-        leftJoy  *= -1
-        rightJoy *= -1
+        leftJoy  *= -0.2
+        rightJoy *= -0.2
 
         self.FLMotor.set(ctre.ControlMode.PercentOutput, leftJoy)
         self.FRMotor.set(ctre.ControlMode.PercentOutput, rightJoy)

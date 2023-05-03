@@ -1,7 +1,7 @@
 import commands2, wpilib
 from subsystems.drivetrain import Drivetrain
 
-class JoystickDrive(commands2.SubsystemBase):
+class JoystickDrive(commands2.CommandBase):
 
     def __init__(self, train: Drivetrain, left, right):
 
