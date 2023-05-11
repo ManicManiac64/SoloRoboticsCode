@@ -18,7 +18,7 @@ class Larry(magicbot.MagicRobot):
     # drive refers to a swerve drive
 
     drive: components.swervedrive.SwerveDrive
-
+    
     # create all objects the robot needs
 
     def createObjects(self):

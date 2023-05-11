@@ -12,6 +12,8 @@ L = 30
 W = 30
 R = math.sqrt(L ** 2 + W ** 2)
 
+STEERINGRATIO = 150 / 7
+
 # motor IDs
 
 FRDRIVE = 2
@@ -29,3 +31,11 @@ BLENCODER = -1
 BRDRIVE = 3
 BRANGLE = 7
 BRENCODER = -1
+
+F = 0.05282272
+P = 0.2
+I = 0.004
+D = 2
+IZONE = 150
+CRUISEVEL = 10567
+CRUISEACCEL = 10567

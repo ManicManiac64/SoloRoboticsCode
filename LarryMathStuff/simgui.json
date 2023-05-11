@@ -11,6 +11,12 @@
     },
     "transitory": {
       "SmartDashboard": {
+        "Actual": {
+          "open": true
+        },
+        "Angles": {
+          "open": true
+        },
         "FR": {
           "FL": {
             "BL": {

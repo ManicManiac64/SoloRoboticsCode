@@ -21,35 +21,56 @@ class SwerveModule:
     
     @staticmethod
     def sensorUnitsToDegrees(su: float) -> float:
-        return (su * (360/2048)) % 360
+        IAmCoolerThanCaden = (su * (360/2048))
+        return (IAmCoolerThanCaden / constants.STEERINGRATIO) % 360
     
     @staticmethod
     def degreesToSensorUnits(deg: float) -> float:
-        return (deg * (2048/360)) % 2048
+        IAmCoolerThanNathan =  (deg * (2048/360))
+        return (IAmCoolerThanNathan * constants.STEERINGRATIO) % 2048
 
     def __init__(self, driveMotorID: int, turnMotorID: int):
         
         self.driveMotor = ctre.TalonFX(driveMotorID)
         self.turnMotor = ctre.TalonFX(turnMotorID)
         
-        self.PIDController = wpimath.controller.PIDController(0.5, 0.0, 0.0)
+        self.turnMotor.configSelectedFeedbackSensor(ctre.FeedbackDevice.IntegratedSensor, 0, 10)
+
+        self.turnMotor.config_kF(0, constants.F, 10)
+
+        self.turnMotor.config_kP(0, constants.P, 10)
+
+        self.turnMotor.config_kI(0, constants.I, 10)
+
+        self.turnMotor.config_kD(0, constants.D, 10)
+
+        self.turnMotor.config_IntegralZone(0, constants.IZONE, 10)
+
+        # MOTOR CONFIG
+        self.turnMotor.configNominalOutputForward(0, 10)
+        self.turnMotor.configNominalOutputReverse(0, 10)
+
+        self.turnMotor.configPeakOutputForward(1, 10)
+        self.turnMotor.configPeakOutputReverse(-1, 10)
+
+        self.turnMotor.selectProfileSlot(0, 0)
+
+        self.turnMotor.configMotionCruiseVelocity(constants.CRUISEVEL, 10)
+        self.turnMotor.configMotionAcceleration(constants.CRUISEACCEL, 10)
+
+        self.turnMotor.setNeutralMode(ctre.NeutralMode.Brake)
+
+        self.turnMotor.setSelectedSensorPosition(0.0, 0, 10)
         
         self.reversedAngle = False
 
     def setSpeed(self, magnitude):
         
-        self.driveMotor.set(ctre.TalonFXControlMode.PercentOutput, magnitude)
+        self.driveMotor.set(ctre.TalonFXControlMode.PercentOutput, magnitude * 0.2)
 
     def setDirection(self, angle):
         
-        output = 0
-        currentAngle = SwerveModule.sensorUnitsToDegrees(self.turnMotor.getSelectedSensorPosition())
-        
-        # insert pid stuff here
-        if abs(angle - currentAngle) >= 2:
-            output = max(min(self.PIDController.calculate(SwerveModule.degreesToSensorUnits(currentAngle), SwerveModule.degreesToSensorUnits(angle)), 1), -1)
-            self.turnMotor.setInverted(self.reversedAngle)
-            self.turnMotor.set(ctre.ControlMode.PercentOutput, output)
+        self.turnMotor.set(ctre.TalonFXControlMode.MotionMagic, self.degreesToSensorUnits(angle))
 
 class SwerveDrive:
     
@@ -79,9 +100,9 @@ class SwerveDrive:
         leftY = deadband(leftY)
         rightX = deadband(rightX)
 
-        temp = leftY * math.cos(gyroAngle) + leftX * math.sin(gyroAngle)
-        leftX = -leftY * math.sin(gyroAngle) + leftX * math.cos(gyroAngle)
-        leftY = temp
+        # temp = leftY * math.cos(gyroAngle) + leftX * math.sin(gyroAngle)
+        # leftX = -leftY * math.sin(gyroAngle) + leftX * math.cos(gyroAngle)
+        # leftY = temp
 
         a = leftX - rightX * (constants.L / constants.R)
         b = leftX + rightX * (constants.L / constants.R)
@@ -149,16 +170,15 @@ class SwerveDrive:
                 self.angles[key] = bReverse
                 self.speeds[key] *= -1
                 module.reversedAngle = True
-
-        wpilib.SmartDashboard.putNumberArray("Angles", [self.angles["FR"], self.angles["FL"], self.angles["BL"], self.angles["BR"]])
-        
                 
     def execute(self):
         """
         Called every loop.
         """
         
-
         for key in self.modules.keys():
             self.modules[key].setSpeed(self.speeds[key])
             self.modules[key].setDirection(self.angles[key])
+
+            wpilib.SmartDashboard.putNumber(f"Angles/{key}", SwerveModule.degreesToSensorUnits(self.angles[key]))
+            wpilib.SmartDashboard.putNumber(f"Actual/{key}", self.modules[key].turnMotor.getSelectedSensorPosition())
