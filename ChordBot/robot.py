@@ -16,7 +16,7 @@ class ChordBot(wpilib.TimedRobot):
         self.orchestra.addInstrument(self.music2)
         self.orchestra.addInstrument(self.music3)
 
-        self.orchestra.loadMusic()
+        self.orchestra.loadMusic("lmintro.chrp")
 
     def teleopPeriodic(self):
 
