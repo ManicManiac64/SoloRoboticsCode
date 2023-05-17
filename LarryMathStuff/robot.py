@@ -37,12 +37,12 @@ class Larry(magicbot.MagicRobot):
 
         self.driverController = wpilib.XboxController(0)
 
-        self.gyro = wpilib.ADIS16470_IMU()
+        # self.gyro = wpilib.ADIS16470_IMU()
 
-        if wpilib.RobotBase.isReal():
+        # if wpilib.RobotBase.isReal():
 
-            self.gyro.setYawAxis(wpilib.ADIS16470_IMU.IMUAxis.kZ)
-            self.gyro.calibrate()
+        #     self.gyro.setYawAxis(wpilib.ADIS16470_IMU.IMUAxis.kZ)
+        #     self.gyro.calibrate()
 
     def teleopPeriodic(self):
         """
@@ -51,7 +51,9 @@ class Larry(magicbot.MagicRobot):
 
         #this move function takes joystick values, and the rotation of the gyro converted to degrees, and will give us the right values for the motors.
 
-        self.drive.move(self.driverController.getLeftX(), -self.driverController.getLeftY(), self.driverController.getRightX(), self.gyro.getAngle() % 360)
+        # self.drive.move(self.driverController.getLeftX(), -self.driverController.getLeftY(), self.driverController.getRightX(), self.gyro.getAngle() % 360)
+
+        self.drive.move(self.driverController.getLeftX(), -self.driverController.getLeftY(), self.driverController.getRightX())
 
 if __name__ == '__main__':
     wpilib.run(Larry)
