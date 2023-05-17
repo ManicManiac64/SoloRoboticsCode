@@ -11,12 +11,13 @@ class ChordBot(wpilib.TimedRobot):
         self.music3 = ctre.TalonFX(3)
     
         self.orchestra = ctre.Orchestra()
+
+        self.orchestra.loadMusic(r"C:\\Users\\rhs.robotics\\Documents\\GitHub\\SoloRoboticsCode\\ChordBot\\notplaceholder.chrp")
+
         self.orchestra.addInstrument(self.music0)
         self.orchestra.addInstrument(self.music1)
         self.orchestra.addInstrument(self.music2)
         self.orchestra.addInstrument(self.music3)
-
-        self.orchestra.loadMusic("lmintro.chrp")
 
     def teleopPeriodic(self):
 
