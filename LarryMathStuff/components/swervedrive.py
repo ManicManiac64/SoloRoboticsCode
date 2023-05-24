@@ -22,18 +22,20 @@ class SwerveModule:
     @staticmethod
     def sensorUnitsToDegrees(su: float) -> float:
         IAmCoolerThanCaden = (su * (360/2048))
-        return (IAmCoolerThanCaden / constants.STEERINGRATIO) % 360
+        return IAmCoolerThanCaden % 360
     
     @staticmethod
     def degreesToSensorUnits(deg: float) -> float:
         IAmCoolerThanNathan =  (deg * (2048/360))
-        return (IAmCoolerThanNathan * constants.STEERINGRATIO) % 2048
+        return IAmCoolerThanNathan % 2048
 
     def __init__(self, driveMotorID: int, turnMotorID: int):
         
         self.driveMotor = ctre.TalonFX(driveMotorID)
         self.turnMotor = ctre.TalonFX(turnMotorID)
-        
+
+        # MOTOR CONFIG
+
         self.turnMotor.configSelectedFeedbackSensor(ctre.FeedbackDevice.IntegratedSensor, 0, 10)
 
         self.turnMotor.config_kF(0, constants.F, 10)
@@ -46,7 +48,6 @@ class SwerveModule:
 
         self.turnMotor.config_IntegralZone(0, constants.IZONE, 10)
 
-        # MOTOR CONFIG
         self.turnMotor.configNominalOutputForward(0, 10)
         self.turnMotor.configNominalOutputReverse(0, 10)
 
@@ -66,11 +67,11 @@ class SwerveModule:
 
     def setSpeed(self, magnitude):
         
-        self.driveMotor.set(ctre.TalonFXControlMode.PercentOutput, magnitude * 0.2)
+        self.driveMotor.set(ctre.TalonFXControlMode.PercentOutput, (magnitude * 0.5))
 
     def setDirection(self, angle):
         
-        self.turnMotor.set(ctre.TalonFXControlMode.MotionMagic, self.degreesToSensorUnits(angle))
+        self.turnMotor.set(ctre.TalonFXControlMode.MotionMagic, int(self.degreesToSensorUnits(angle) * constants.STEERINGRATIO))
 
 class SwerveDrive:
     
@@ -100,9 +101,11 @@ class SwerveDrive:
         leftY = deadband(leftY)
         rightX = deadband(rightX)
 
-        # temp = leftY * math.cos(gyroAngle) + leftX * math.sin(gyroAngle)
-        # leftX = -leftY * math.sin(gyroAngle) + leftX * math.cos(gyroAngle)
-        # leftY = temp
+        gyroAngle = 360 - gyroAngle
+
+        temp = leftY * math.cos(gyroAngle) + leftX * math.sin(gyroAngle)
+        leftX = -leftY * math.sin(gyroAngle) + leftX * math.cos(gyroAngle)
+        leftY = temp
 
         a = leftX - rightX * (constants.L / constants.R)
         b = leftX + rightX * (constants.L / constants.R)
@@ -123,9 +126,9 @@ class SwerveDrive:
         #optimize speeds
         maxi = max(self.speeds.values())
 
-        if maxi >= 1:
+        if abs(maxi) >= 1:
             for key in self.speeds.keys():
-                self.speeds[key] /= maxi
+                self.speeds[key] /= abs(maxi)
 
         #optimize angles
         #the key to this is finding 4 differences, going clockwise or counter, and forward or reversing the wheel's speed
@@ -133,7 +136,7 @@ class SwerveDrive:
             module = self.modules[key]
             
             #again modulo 360 changes negative angles to positive (and positive to positive, of course)
-            a = SwerveModule.sensorUnitsToDegrees(module.turnMotor.getSelectedSensorPosition())
+            a = SwerveModule.sensorUnitsToDegrees(module.turnMotor.getSelectedSensorPosition()) / constants.STEERINGRATIO
             bForward = self.angles[key]
             
             #clockwise and forward distance
@@ -155,21 +158,26 @@ class SwerveDrive:
                 self.angles[key] = bForward
                 self.speeds[key] *= 1
                 module.reversedAngle = False
+                wpilib.SmartDashboard.putString(f"{key} Optimization", "None")
                 
             elif minimum == couFor:
                 self.angles[key] = bForward
                 self.speeds[key] *= 1
                 module.reversedAngle = True
+                wpilib.SmartDashboard.putString(f"{key} Optimization", "Other direction")
                 
             elif minimum == cloRev:
                 self.angles[key] = bReverse
                 self.speeds[key] *= -1
                 module.reversedAngle = False
+                wpilib.SmartDashboard.putString(f"{key} Optimization", "Reverse speed")
                 
             elif minimum == couRev:
                 self.angles[key] = bReverse
                 self.speeds[key] *= -1
                 module.reversedAngle = True
+                wpilib.SmartDashboard.putString(f"{key} Optimization", "Reverse speed other direction")
+
                 
     def execute(self):
         """
@@ -179,6 +187,3 @@ class SwerveDrive:
         for key in self.modules.keys():
             self.modules[key].setSpeed(self.speeds[key])
             self.modules[key].setDirection(self.angles[key])
-
-            wpilib.SmartDashboard.putNumber(f"Angles/{key}", SwerveModule.degreesToSensorUnits(self.angles[key]))
-            wpilib.SmartDashboard.putNumber(f"Actual/{key}", self.modules[key].turnMotor.getSelectedSensorPosition())

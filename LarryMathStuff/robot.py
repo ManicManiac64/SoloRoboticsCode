@@ -7,6 +7,7 @@ and constants is the file with all our constants
 """
 
 import wpilib
+import ctre
 import magicbot
 import components.swervedrive
 import constants
@@ -44,6 +45,21 @@ class Larry(magicbot.MagicRobot):
             self.gyro.setYawAxis(wpilib.ADIS16470_IMU.IMUAxis.kZ)
             self.gyro.calibrate()
 
+    def disabledInit(self):
+        """
+        Called when disabled initially
+        """
+
+        for module in self.drive.modules.values():
+
+            module.turnMotor.setNeutralMode(ctre.NeutralMode.Coast)
+
+    def teleopInit(self):
+
+        for module in self.drive.modules.values():
+
+            module.turnMotor.setNeutralMode(ctre.NeutralMode.Brake)
+
     def teleopPeriodic(self):
         """
         Called every time robot is in teleop
@@ -52,6 +68,7 @@ class Larry(magicbot.MagicRobot):
         #this move function takes joystick values, and the rotation of the gyro converted to degrees, and will give us the right values for the motors.
 
         self.drive.move(self.driverController.getLeftX(), -self.driverController.getLeftY(), self.driverController.getRightX(), self.gyro.getAngle() % 360)
+        wpilib.SmartDashboard.putNumber("Angle", self.gyro.getAngle() % 360)
 
 if __name__ == '__main__':
     wpilib.run(Larry)
