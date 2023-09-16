@@ -21,14 +21,9 @@ public class Robot extends TimedRobot {
 
   Orchestra orchestra;
   
-  WPI_TalonFX[] _wpifxes = {new WPI_TalonFX(0), new WPI_TalonFX(1), new WPI_TalonFX(2), new WPI_TalonFX(3)};
-
-  TalonFX death = new TalonFX(0);
-  TalonFX famine = new TalonFX(1);
-  TalonFX war = new TalonFX(2);
-  TalonFX conquest = new TalonFX(3);
+  WPI_TalonFX[] _wpifxes = {new WPI_TalonFX(3), new WPI_TalonFX(1), new WPI_TalonFX(2), new WPI_TalonFX(0)};
   
-  String song = "notplaceholder.chrp";
+  String song = "samsung.chrp";
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -77,12 +72,17 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    orchestra.stop();
+  }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
     orchestra.play();
+    if (orchestra.getCurrentTime() >= 2500) {
+      orchestra.stop();
+    }
   }
 
   /** This function is called once when the robot is disabled. */
