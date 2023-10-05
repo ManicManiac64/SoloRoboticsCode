@@ -22,8 +22,8 @@ class TrainingBot(wpilib.TimedRobot):
         self.left = -(self.dawg.getLeftY())
         self.right = -(self.dawg.getRightY())
 
-        self.FLMotor.set(ctre.TalonFXControlMode.PercentOutput, 0.2 * self.left)
-        self.FRMotor.set(ctre.TalonFXControlMode.PercentOutput, 0.2 * self.right)
+        self.FLMotor.set(ctre.TalonFXControlMode.PercentOutput, 1 * self.left)
+        self.FRMotor.set(ctre.TalonFXControlMode.PercentOutput, 1 * self.right)
 
     def autonomousInit(self):
 
@@ -39,14 +39,14 @@ class TrainingBot(wpilib.TimedRobot):
 
         if self.timerValue <= 2:
 
-            self.FLMotor.set(ctre.TalonFXControlMode.PercentOutput, 0.25)
-            self.FRMotor.set(ctre.TalonFXControlMode.PercentOutput, 0.25)
+            self.FLMotor.set(ctre.TalonFXControlMode.PercentOutput, 1)
+            self.FRMotor.set(ctre.TalonFXControlMode.PercentOutput, 1)
             wpilib.SmartDashboard.putString("Phase", "Forward")
 
         elif self.timerValue <= 3.5:
 
-            self.FLMotor.set(ctre.TalonFXControlMode.PercentOutput, -0.125)
-            self.FRMotor.set(ctre.TalonFXControlMode.PercentOutput, 0.125)
+            self.FLMotor.set(ctre.TalonFXControlMode.PercentOutput, -1)
+            self.FRMotor.set(ctre.TalonFXControlMode.PercentOutput, 1)
             wpilib.SmartDashboard.putString("Phase", "Turning")
 
         else:
