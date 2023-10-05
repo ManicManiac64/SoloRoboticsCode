@@ -20,4 +20,3 @@ class Basic(AutonomousStateMachine):
     @state
     def stop(self):
         self.drivetrain.move(0.0, 0.0)
-    
